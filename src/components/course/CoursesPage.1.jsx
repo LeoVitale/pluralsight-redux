@@ -8,8 +8,24 @@ class CoursesPage extends Component {
 
   constructor(props, context) {
     super(props, context);
+
+    this.state = {
+      course: {
+        title: ""
+      }
+    };
   }
 
+
+  onTitleChange = (event) => {
+    const course = this.state.course;
+    course.title = event.target.value;
+    this.setState({course:course});
+  };
+
+  onClickSave = (event) => {
+    this.props.actions.createCourse(this.state.course);
+  }
 
   courseRow = (course, index) => {
     return(
@@ -19,11 +35,19 @@ class CoursesPage extends Component {
 
   render() {
     //debugger;
-    const { courses } = this.props;
     return (
       <div>
         <h1>Courses</h1>
-        <CourseList courses={courses}/>
+        {this.props.courses.map(this.courseRow)}
+        <h2>Add Course</h2>
+        <input
+          type="text"
+          onChange={this.onTitleChange}
+          value={this.state.course.title}/>
+        <input
+          type="submit"
+          onClick={this.onClickSave}
+          value="Save"/>
       </div>
     );
   }
